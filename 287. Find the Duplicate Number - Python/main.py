@@ -4,7 +4,10 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        return (sum(nums) - sum(set(nums))) / (len(nums) - len(set(nums)))
+        nums = sorted(nums)
+        for i in range(len(nums) - 1):
+            if nums[i] == nums[i + 1]:
+                return nums[i]
 
 
 if __name__ == '__main__':
