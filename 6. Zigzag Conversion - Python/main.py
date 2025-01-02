@@ -32,6 +32,6 @@ class Solution(object):
 
 if __name__ == '__main__':
     print('in main')
-    s = "saghjdgfskhjf"
+    s = "abc"
     numRows = 1
     print(Solution().convert(s, numRows))
