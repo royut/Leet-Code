@@ -11,8 +11,8 @@ def lcmCalc(multiples):
 
 def gcdCalc(nums, min):
     gcd = 1
-    flag = True
     for i in range(min, 0, -1):
+        flag = True
         for num in nums:
             if num % i != 0:
                 flag = False
@@ -20,6 +20,13 @@ def gcdCalc(nums, min):
             gcd = i
             break
     return gcd
+
+
+def prodCalc(nums):
+    prod = 1
+    for num in nums:
+        prod *= num
+    return prod
 
 
 class Solution(object):
@@ -41,21 +48,16 @@ class Solution(object):
             multiples.append(numMultiples)
         lcm = lcmCalc(multiples)
         gcd = gcdCalc(nums, minNum)
-        prod = 1
-        for num in nums:
-            prod *= num
-        print(nums, lcm, gcd, prod)
-        while prod > lcm * gcd:
-            i = nums.index(maxNum)
-            nums.pop(i)
-            prod = prod // maxNum
-            maxNum = max(nums)
-            minNum = min(nums)
-            multiples.pop(i)
-            lcm = lcmCalc(multiples)
-            gcd = gcdCalc(nums, minNum)
-        print(nums)
-        return len(nums)
+        prod = prodCalc(nums)
+        maxLength = 0
+        for i in range(len(nums) + 1):
+            for j in range(i + 1, len(nums) + 1):
+                # print(nums[i:j])
+                if prodCalc(nums[i:j]) == gcdCalc(nums[i:j], min(nums[i:j])) * lcmCalc(multiples[i:j]):
+                    # print(i,j, nums[i:j], prodCalc(nums[i:j]), gcdCalc(nums[i:j], min(nums[i:j])), lcmCalc(multiples[i:j]), j - i + 1)
+                    if maxLength < j - i:
+                        maxLength = j - i
+        return maxLength
 
 
 if __name__ == '__main__':
@@ -64,4 +66,6 @@ if __name__ == '__main__':
     nums = [1, 2, 1, 1, 1]
     nums = [2,4,6]
     nums = [1,2,1,2,1,1,1]
+    # nums = [2,3,4,5,6]
+    nums = [4,6]
     print(Solution().maxLength(nums))
