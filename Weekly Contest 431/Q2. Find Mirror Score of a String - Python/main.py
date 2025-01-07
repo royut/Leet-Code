@@ -5,21 +5,24 @@ class Solution(object):
         :rtype: int
         """
         alphabet = 'abcdefghijklmnopqrstuvwxyz'
+        charDict = {}
+        for char in alphabet:
+            charDict[char] = []
 
-        # print(sNums, marks)
         score = 0
         for i in range(len(s)):
-            # print('i', sNums[i])
             mirror = alphabet[25 - alphabet.find(s[i])]
-            found = s[:i].rfind(mirror)
-            if found != -1:
-                score += i - found
-                s = s[:found] + ' ' + s[found+1:]
-                s = s[:i] + ' ' + s[i+1:]
+            # print(i, mirror)
+            if charDict[mirror] != []:
+                foundIndex = charDict[mirror].pop()
+                score += i - foundIndex
+            else:
+                charDict[s[i]].append(i)
+        # print(charDict)
 
         return score
 
 
 if __name__ == '__main__':
     print('in main')
-    print(Solution().calculateScore('abcdef'))
+    print(Solution().calculateScore('aczzx'))
