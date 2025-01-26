@@ -1,6 +1,3 @@
-from collections import deque
-
-
 class Solution(object):
     def eventualSafeNodes(self, graph):
         """
@@ -8,33 +5,32 @@ class Solution(object):
         :rtype: List[int]
         """
         visited = set()
-        print(visited)
+        safe = set()
         n = len(graph)
-        nodes = set(range(len(graph)))
-        queue = [0]
-        cycles = []
-        while len(visited) != n:
-            print(queue, visited, nodes)
-            node = queue.pop(0)
-            edges = graph[node]
-            visited.add(node)
-            nodes.remove(node)
-            for edge in edges:
-                if edge not in visited:
-                    if edge not in queue:
-                        queue.append(edge)
-                else:
-                    cycles.append((edge, node))
-            if len(queue) == 0:
-                n = nodes.pop()
-                nodes.add(n)
-                print(n)
-                queue.append(n)
-                # for i in range(n):
-        print('cycles', cycles)
+        for i, row in enumerate(graph):
+            if not row:
+                safe.add(i)
+                visited.add(i)
+
+        def dfs(i):
+            visited.add(i)
+            print('in function', i)
+            for v in graph[i]:
+                print(v)
+                if v not in visited:
+                    dfs(v)
+                if v not in safe:
+                    return
+            safe.add(i)
+
+        for i in range(n):
+            if i not in visited:
+                dfs(i)
+
+        return sorted(list(safe))
 
 
 if __name__ == '__main__':
     print('in main')
-    graph = [[1, 2], [2, 3], [5], [0], [5], [], []]
+    graph = [[1, 2], [2, 3], [5], [0], [5], [6], []]
     print(Solution().eventualSafeNodes(graph))
