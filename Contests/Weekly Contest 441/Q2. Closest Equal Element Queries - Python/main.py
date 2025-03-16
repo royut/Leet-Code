@@ -12,42 +12,31 @@ class Solution(object):
             else:
                 locs[nums[i]].append(i)
         # print(locs)
-        ans = []
+        ans = {}
+        ansList = []
         for q in queries:
-            numToFind = nums[q]
-            rightIndex = q+1
-            leftIndex = q-1
-            if rightIndex >= len(nums):
-                rightIndex -= len(nums)
-            if leftIndex < 0:
-                leftIndex += len(nums)
-            foundFlag = False
-            # print('q', q, numToFind)
-            while True:
-                # print('indexes', leftIndex, rightIndex)
-                if numToFind == nums[leftIndex] and leftIndex != q:
-                    dist = min(abs(q - leftIndex), abs(len(nums) - abs(q - leftIndex)))
-                    ans.append(dist)
-                    foundFlag = True
-                    break
-                if numToFind == nums[rightIndex] and rightIndex != q:
-                    dist = min(abs(rightIndex - q), abs(len(nums) - abs(q - rightIndex)))
-                    ans.append(dist)
-                    foundFlag = True
-                    break
-                if rightIndex == leftIndex:
-                    break
-                rightIndex += 1
-                leftIndex -= 1
-                if rightIndex >= len(nums):
-                    rightIndex -= len(nums)
-                if leftIndex < 0:
-                    leftIndex += len(nums)
-            # print(foundFlag)
-            if not foundFlag:
-                ans.append(-1)
-            # print(ans)
-        return ans
+            if q not in ans:
+                numToFind = nums[q]
+                # print('to fiund', numToFind, q)
+                if numToFind not in locs or len(locs[numToFind]) == 1:
+                    ans[q] = (-1)
+                else:
+                    qIndex = locs[numToFind].index(q)
+                    before = locs[numToFind][qIndex-1]
+                    if qIndex == len(locs[numToFind])-1:
+                        after = locs[numToFind][0]
+                    else:
+                        after = locs[numToFind][qIndex+1]
+                    # print(locs[numToFind], q, qIndex, before, after)
+                    distBefore = min(abs(before - q), abs(len(nums) - abs(before - q)))
+                    distAfter = min(abs(after - q), abs(len(nums) - abs(after - q)))
+                    minDist = min(distBefore, distAfter)
+                    ans[q] = minDist
+                ansList.append(ans[q])
+            else:
+                ansList.append(ans[q])
+                # print('ans', ans)
+        return ansList
 
 
 if __name__ == '__main__':
