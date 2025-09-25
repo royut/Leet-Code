@@ -4,20 +4,20 @@ class Solution(object):
         :type triangle: List[List[int]]
         :rtype: int
         """
-        dp = [[triangle[0][0]]]
+        dp = [triangle[0][0]]
         for i in range(1, len(triangle)):
             currentRow = []
             for j in range(len(triangle[i])):
                 if j == 0:
-                    tempMin = dp[i-1][j]
+                    tempMin = dp[j]
                 elif j == i:
-                    tempMin = dp[i-1][j-1]
+                    tempMin = dp[j-1]
                 else:
-                    tempMin = min(dp[i-1][j-1], dp[i-1][j])
+                    tempMin = min(dp[j-1], dp[j])
                 currentRow.append(tempMin + triangle[i][j])
-            dp.append(currentRow)
+            dp = currentRow
             # print(dp)
-        return min(dp[-1])
+        return min(dp)
 
 
 if __name__ == '__main__':
