@@ -32,11 +32,13 @@ class Solution(object):
                 if shuffleCount == 2:
                     return -1
         # print(shuffleCount)
+        if shuffleCount == 0:
+            shuffleIndex = length - 1
         # print(shuffleIndex)
-        print(nums[:shuffleIndex], nums[shuffleIndex:])
+        # print(nums[:shuffleIndex], nums[shuffleIndex:])
         diff = abs(sumsFromStart[shuffleIndex-1] - sumsFromEnd[length - shuffleIndex - 1])
         if nums[shuffleIndex-1] > nums[shuffleIndex] and shuffleIndex - 1 != 0:
-            print(nums[:shuffleIndex-1], nums[shuffleIndex-1:])
+            # print(nums[:shuffleIndex-1], nums[shuffleIndex-1:])
             newDiff = abs(sumsFromStart[shuffleIndex-2] - sumsFromEnd[length - shuffleIndex])
             diff = min(diff, newDiff)
         return diff
@@ -48,4 +50,6 @@ if __name__ == "__main__":
     # nums = [1, 2, 1]
     # nums = [4,3]
     # nums = [2,4]
+    nums = [77, 34, 23, 15, 5]
+    nums = [1, 2, 3]
     print(Solution().splitArray(nums))
