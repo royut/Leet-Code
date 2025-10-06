@@ -6,41 +6,44 @@ class Solution(object):
         """
         m, n = len(heights), len(heights[0])
         atlantic = [[False for _ in range(n)] for _ in range(m)]
-        for i in range(n-1, -1, -1):
-            for j in range(m-1, -1, -1):
-                if j == m-1:
-                    atlantic[j][i] = True
-                else:
-                    if i == n-1:
-                        atlantic[j][i] = True
-                    elif (heights[j][i] >= heights[j+1][i] and atlantic[j+1][i]) or (heights[j][i] >= heights[j][i+1] and atlantic[j][i+1]):
-                        # print(j, i, atlantic[j+1][i], atlantic[j][i+1])
-                        atlantic[j][i] = True
-                        if heights[j][i] < heights[j][i+1]:
-                            atlantic[j][i+1] = True
-                        if heights[j][i] < heights[j+1][i]:
-                            atlantic[j+1][i] = True
+        atlanticVisited = [[False for _ in range(n)] for _ in range(m)]
+        atlanticStack = [[m-1, i] for i in range(n)]
+        atlanticStack.extend([[i, n-1] for i in range(m)])
+        while len(atlanticStack) > 0:
+            curr = atlanticStack.pop()
+            atlanticVisited[curr[0]][curr[1]] = True
+            atlantic[curr[0]][curr[1]] = True
+            if curr[1] > 0 and heights[curr[0]][curr[1]] <= heights[curr[0]][curr[1]-1] and not atlanticVisited[curr[0]][curr[1]-1]:
+                atlanticStack.append([curr[0], curr[1]-1])
+            if curr[0] > 0 and heights[curr[0]][curr[1]] <= heights[curr[0]-1][curr[1]] and not atlanticVisited[curr[0]-1][curr[1]]:
+                atlanticStack.append([curr[0]-1, curr[1]])
+            if curr[1] < n-1 and heights[curr[0]][curr[1]] <= heights[curr[0]][curr[1]+1] and not atlanticVisited[curr[0]][curr[1]+1]:
+                atlanticStack.append([curr[0], curr[1]+1])
+            if curr[0] < m-1 and heights[curr[0]][curr[1]] <= heights[curr[0]+1][curr[1]] and not atlanticVisited[curr[0]+1][curr[1]]:
+                atlanticStack.append([curr[0]+1, curr[1]])
         # print('atlantic')
         # for i in range(m):
         #     print(atlantic[i])
+
         pacific = [[False for _ in range(n)] for _ in range(m)]
-        for i in range(n):
-            for j in range(m):
-                if j == 0:
-                    pacific[j][i] = True
-                else:
-                    if i == 0:
-                        pacific[j][i] = True
-                    elif (heights[j][i] >= heights[j-1][i] and pacific[j-1][i]) or (heights[j][i] >= heights[j][i-1] and pacific[j][i-1]):
-                        # print(j, i, pacific[j-1][i], pacific[j][i-1])
-                        pacific[j][i] = True
-                        if heights[j][i] < heights[j][i-1]:
-                            pacific[j][i-1] = True
-                        if heights[j][i] < heights[j-1][i]:
-                            pacific[j-1][i] = True
-        print('pacific')
-        for i in range(m):
-            print(pacific[i])
+        pacificVisited = [[False for _ in range(n)] for _ in range(m)]
+        pacificStack = [[0, i] for i in range(n)]
+        pacificStack.extend([[i, 0] for i in range(m)])
+        while len(pacificStack) > 0:
+            curr = pacificStack.pop()
+            pacificVisited[curr[0]][curr[1]] = True
+            pacific[curr[0]][curr[1]] = True
+            if curr[1] > 0 and heights[curr[0]][curr[1]] <= heights[curr[0]][curr[1]-1] and not pacificVisited[curr[0]][curr[1]-1]:
+                pacificStack.append([curr[0], curr[1]-1])
+            if curr[0] > 0 and heights[curr[0]][curr[1]] <= heights[curr[0]-1][curr[1]] and not pacificVisited[curr[0]-1][curr[1]]:
+                pacificStack.append([curr[0]-1, curr[1]])
+            if curr[1] < n-1 and heights[curr[0]][curr[1]] <= heights[curr[0]][curr[1]+1] and not pacificVisited[curr[0]][curr[1]+1]:
+                pacificStack.append([curr[0], curr[1]+1])
+            if curr[0] < m-1 and heights[curr[0]][curr[1]] <= heights[curr[0]+1][curr[1]] and not pacificVisited[curr[0]+1][curr[1]]:
+                pacificStack.append([curr[0]+1, curr[1]])
+        # print('pacific')
+        # for i in range(m):
+        #     print(pacific[i])
         both = []
         for i in range(m):
             for j in range(n):
