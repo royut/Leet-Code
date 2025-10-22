@@ -1,3 +1,5 @@
+import bisect
+
 class Solution(object):
     def maxFrequency(self, nums, k, numOperations):
         """
@@ -14,21 +16,17 @@ class Solution(object):
             else:
                 freq[num] += 1
         # print(freq)
+        print(nums)
         maxFreq = 0
         for i in range(nums[0], nums[-1] + 1):
-            tempFreq = 0
-            tempOperations = numOperations
-            for j in range(-k, k + 1):
-                if i + j in freq:
-                    if j == 0:
-                        tempFreq += freq[i + j]
-                    elif tempOperations > 0:
-                        tempFreq += min(tempOperations, freq[i + j])
-                        tempOperations -= min(tempOperations, freq[i + j])
-                # print(j, tempFreq, i, tempOperations)
-            # print(i, tempFreq)
-            if tempFreq > maxFreq:
-                maxFreq = tempFreq
+            l = bisect.bisect_left(nums, i - k)
+            r = bisect.bisect_right(nums, i + k) - 1
+            len = r - l + 1
+            if i in freq:
+                tempFreq = min(len, freq[i] + numOperations)
+            else:
+                tempFreq = min(len, numOperations)
+            maxFreq = max(maxFreq, tempFreq)
         return maxFreq
 
 
