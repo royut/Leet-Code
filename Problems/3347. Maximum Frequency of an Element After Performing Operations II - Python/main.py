@@ -10,15 +10,25 @@ class Solution(object):
         """
         nums.sort()
         freq = {}
+        toCheck = set()
+
+        def addToCheckList(num):
+            toCheck.add(num)
+            if num - k >= nums[0]:
+                toCheck.add(num - k)
+            if num + k <= nums[-1]:
+                toCheck.add(num + k)
+
         for num in nums:
             if num not in freq:
                 freq[num] = 1
+                addToCheckList(num)
             else:
                 freq[num] += 1
-        # print(freq)
-        print(nums)
+
+        # print(toCheck)
         maxFreq = 0
-        for i in range(nums[0], nums[-1] + 1):
+        for i in toCheck:
             l = bisect.bisect_left(nums, i - k)
             r = bisect.bisect_right(nums, i + k) - 1
             len = r - l + 1
