@@ -5,28 +5,29 @@ class Solution(object):
         :type p: int
         :rtype: int
         """
-        preSum = [0, nums[0]]
-        for i in range(1, len(nums)):
-            preSum.append(preSum[-1] + nums[i])
-        # print(nums)
-        # print(preSum)
-        remainder = preSum[-1] % p
-        if remainder == 0:
+        target = sum(nums) % p
+        if target == 0:
             return 0
-        for i in range(1, len(preSum)-1):
-            for j in range(len(preSum) - i):
-                # print(j, j+i, nums[j:j+i], preSum[j+i], preSum[j])
-                if (preSum[j+i] - preSum[j]) % p == remainder:
-                    return i
-        return -1
+        remainders = {0: -1}
+        currSum = 0
+        minLen = len(nums)
+        for i in range(len(nums)):
+            currSum = (currSum + nums[i]) % p
+            needed = (currSum - target + p) % p
+            if needed in remainders:
+                minLen = min(minLen, i - remainders[needed])
+            remainders[currSum] = i
+        if minLen == len(nums):
+            return -1
+        return minLen
 
 
 if __name__ == '__main__':
     print('in main')
     nums = [3, 1, 4, 2]
     p = 6
-    nums = [6, 3, 5, 2]
-    p = 9
-    nums = [1, 2, 3]
-    p = 7
+    # nums = [6, 3, 5, 2]
+    # p = 9
+    # nums = [1, 2, 3]
+    # p = 7
     print(Solution().minSubarray(nums, p))
