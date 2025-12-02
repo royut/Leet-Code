@@ -14,14 +14,15 @@ class Solution(object):
                 rows[y] = 1
                 rowsIndex.append(y)
         rowsLineCount = []
+        sumEdges = 0
         for row in rows:
             rowsLineCount.append(rows[row] * (rows[row] - 1) // 2)
+            sumEdges += rowsLineCount[-1]
         total = 0
         for i in range(len(rowsLineCount)):
-            for j in range(i + 1, len(rowsLineCount)):
-                total += rowsLineCount[i] * rowsLineCount[j]
-        # print(rows, rowsIndex, rowsLineCount)
-        return total
+            sumEdges -= rowsLineCount[i]
+            total += rowsLineCount[i] * sumEdges
+        return total % 1000000007
 
 
 if __name__ == '__main__':
