@@ -10,6 +10,7 @@ class Solution(object):
             minL, minT, minR = float('inf'), float('inf'), float('inf')
             maxL, maxT, maxR = -1, -1, -1
             for i in range(len(nums)):
+                pass
 
 
 if __name__ == "__main__":
