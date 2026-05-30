@@ -1,19 +1,18 @@
+from sortedcontainers import SortedList
+
+
 class Solution(object):
     def getResults(self, queries):
         """
         :type queries: List[List[int]]
         :rtype: List[bool]
         """
-        d = [0, float('inf')]
+        d = SortedList([0, float('inf')])
         ans = []
         for q in queries:
             if q[0] == 1:
-                i = 0
-                for i in range(len(d)):
-                    if d[i] > q[1]:
-                        break
-                d.insert(i, q[1])
-                # print(i, d)
+                d.add(q[1])
+                print(d)
             if q[0] == 2:
                 prev = 0
                 # print(q)
@@ -35,6 +34,6 @@ class Solution(object):
 
 if __name__ == "__main__":
     print('in main')
-    queries = [[1, 2], [2, 3, 3], [2, 3, 1], [2, 2, 2]]
-    # queries = [[1, 7], [2, 7, 6], [1, 2], [2, 7, 5], [2, 7, 6]]
+    # queries = [[1, 2], [2, 3, 3], [2, 3, 1], [2, 2, 2]]
+    queries = [[1, 7], [2, 7, 6], [1, 2], [2, 7, 5], [2, 7, 6]]
     print(Solution().getResults(queries))
