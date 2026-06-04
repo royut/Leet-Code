@@ -8,18 +8,20 @@ class Solution(object):
         peaks = 0
         valleys = 0
         for i in range(num1, num2 + 1):
-            numsArr = []
+            ppp, pp, p = -1, -1, -1
             currNum = i
             crrNumCount = 0
             while currNum > 0:
-                numsArr.append(currNum % 10)
+                ppp = pp
+                pp = p
+                p = currNum % 10
                 currNum = currNum // 10
                 crrNumCount += 1
                 if crrNumCount == 1 or crrNumCount == 2:
                     continue
-                if numsArr[crrNumCount-3] < numsArr[crrNumCount-2] and numsArr[crrNumCount-1] < numsArr[crrNumCount-2]:
+                if ppp < pp and p < pp:
                     peaks += 1
-                if numsArr[crrNumCount-3] > numsArr[crrNumCount-2] and numsArr[crrNumCount-1] > numsArr[crrNumCount-2]:
+                if ppp > pp and p > pp:
                     valleys += 1
             # print(numsArr, peaks, valleys)
         return peaks + valleys
