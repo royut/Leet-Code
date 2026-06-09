@@ -6,15 +6,19 @@ class Solution(object):
         :rtype: int
         """
         n = len(nums)
-        maxScore = 0
+        maxNum = nums[0]
+        minNum = nums[0]
         for i in range(n):
-            currentMax = nums[i]
-            currentMin = nums[i]
-            for j in range(1, n-i):
-                currentMax = max(currentMax, nums[i+j])
-                currentMin = min(currentMin, nums[i+j])
-                # print(nums[i], nums[i+j], currentMax, currentMin)
-                tempScore = currentMax - currentMin
-                maxScore = max(maxScore, tempScore)
+            if nums[i] > maxNum:
+                maxNum = nums[i]
+            if nums[i] < minNum:
+                minNum = nums[i]
         # print(maxScore)
-        return maxScore * k
+        return (maxNum - minNum) * k
+
+
+if __name__ == '__main__':
+    print('in main')
+    nums = [1, 3, 2]
+    k = 2
+    print(Solution().maxTotalValue(nums, k))
