@@ -10,31 +10,35 @@ class Solution(object):
         # print(m)
         dp = [[[[] for _ in range(m)], [[] for _ in range(m)]] for _ in range(n)]
         # print(dp)
+        pre_fix_sum_up = [0]
+        pre_fix_sum_down = [0]
         for i in range(m):
             # down
-            arr = dp[0][0][i]
             dp[0][0][i] = 1
+            pre_fix_sum_down.append((pre_fix_sum_down[i] + dp[0][0][i]) % 1000000007)
             # up
-            arr = dp[0][1][i]
             dp[0][1][i] = 1
+            pre_fix_sum_up.append((pre_fix_sum_up[i] + dp[0][1][i] % 1000000007))
         # print(dp[0])
         for i in range(1, n):
-            last_arr = dp[i-1]
-            # print('iii', i, last_arr)
-            # down
-            last_arr_down = dp[i-1][0]
-            # up
-            last_arr_up = dp[i-1][1]
-            # print(last_arr_down, last_arr_up)
+            npfsu = [0]
+            npfsd = [0]
             for j in range(m):
                 # make up:
                 # print('j up', j, last_arr_up[:j])
-                dp[i][0][j] = sum(last_arr_up[:j])
+                dp[i][0][j] = pre_fix_sum_up[j]
                 # make down
                 # print('j down', j, last_arr_up[:j])
-                dp[i][1][j] = sum(last_arr_down[j+1:])
-        print(dp)
-        return (sum(dp[-1][0]) + sum(dp[-1][1])) % 1000000007
+                dp[i][1][j] = pre_fix_sum_down[-1] - pre_fix_sum_down[j+1]
+                npfsd.append((npfsd[j] + dp[i][0][j]) % 1000000007)
+                npfsu.append((npfsu[j] + dp[i][1][j]) % 1000000007)
+            pre_fix_sum_up = [0]
+            pre_fix_sum_down = [0]
+            for j in range(m):
+                pre_fix_sum_down.append((pre_fix_sum_down[-1] + dp[i][0][j]) % 1000000007)
+                pre_fix_sum_up.append((pre_fix_sum_up[-1] + dp[i][1][j]) % 1000000007)
+        # print(dp)
+        return (pre_fix_sum_down[-1] + pre_fix_sum_up[-1]) % 1000000007
 
 
 if __name__ == "__main__":
