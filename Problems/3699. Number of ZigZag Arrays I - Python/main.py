@@ -7,38 +7,30 @@ class Solution(object):
         :rtype: int
         """
         m = r - l + 1
-        # print(m)
-        dp = [[[[] for _ in range(m)], [[] for _ in range(m)]] for _ in range(n)]
-        # print(dp)
-        pre_fix_sum_up = [0]
-        pre_fix_sum_down = [0]
-        for i in range(m):
-            # down
-            dp[0][0][i] = 1
-            pre_fix_sum_down.append((pre_fix_sum_down[i] + dp[0][0][i]) % 1000000007)
-            # up
-            dp[0][1][i] = 1
-            pre_fix_sum_up.append((pre_fix_sum_up[i] + dp[0][1][i] % 1000000007))
-        # print(dp[0])
+        MOD = 10**9 + 7
+
+        prev_up = [1] * m
+        prev_down = [1] * m
+
         for i in range(1, n):
-            npfsu = [0]
-            npfsd = [0]
+            suf_down = [0] * (m+1)
+            pre_up = [0] * (m+1)
             for j in range(m):
-                # make up:
-                # print('j up', j, last_arr_up[:j])
-                dp[i][0][j] = pre_fix_sum_up[j]
-                # make down
-                # print('j down', j, last_arr_up[:j])
-                dp[i][1][j] = pre_fix_sum_down[-1] - pre_fix_sum_down[j+1]
-                npfsd.append((npfsd[j] + dp[i][0][j]) % 1000000007)
-                npfsu.append((npfsu[j] + dp[i][1][j]) % 1000000007)
-            pre_fix_sum_up = [0]
-            pre_fix_sum_down = [0]
+                pre_up[j+1] = (pre_up[j] + prev_up[j]) % MOD
+            for j in range(m-1, -1, -1):
+                suf_down[j] = (suf_down[j+1] + prev_down[j]) % MOD
+            # print('ad', prev_down, prev_up)
+            # print('add', pre_up, suf_down)
+            up = []
+            down = []
             for j in range(m):
-                pre_fix_sum_down.append((pre_fix_sum_down[-1] + dp[i][0][j]) % 1000000007)
-                pre_fix_sum_up.append((pre_fix_sum_up[-1] + dp[i][1][j]) % 1000000007)
-        # print(dp)
-        return (pre_fix_sum_down[-1] + pre_fix_sum_up[-1]) % 1000000007
+                up.append(suf_down[j+1] % MOD)
+                down.append(pre_up[j] % MOD)
+            print(up, down)
+            prev_up = up
+            prev_down = down
+
+        return (sum(up) + sum(down)) % MOD
 
 
 if __name__ == "__main__":
