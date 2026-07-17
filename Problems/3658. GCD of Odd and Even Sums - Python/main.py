@@ -4,12 +4,7 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
-        sumOdd = n * n
-        sumEven = n * n + n
-        while True:
-            if sumEven % sumOdd == 0:
-                return sumOdd
-            sumEven, sumOdd = sumOdd, sumEven % sumOdd
+        return n
 
 
 if __name__ == "__main__":
